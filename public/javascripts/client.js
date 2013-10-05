@@ -15,13 +15,12 @@
 
 
     function moved(evt) {
-        control.onmousemove = null;
         // TODO: Fall back to compatible event API.
         var diffX = evt.webkitMovementX;
         var diffY = evt.webkitMovementY;
 
         // Send mouse move event.
-        rpc("move", {x: diffX, y: diffY});
+        rpc("m", {x: diffX, y: diffY});
     }
 
 
@@ -35,6 +34,7 @@
         }
 
         xmlhttp.open("POST", "/rpc/?m=" + method, true);
+        xmlhttp.setRequestHeader("Content-type","application/json");
         xmlhttp.send(JSON.stringify(data));
     };
    
