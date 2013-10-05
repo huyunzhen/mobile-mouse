@@ -1,6 +1,6 @@
 var x11 = require("x11");
 
-var ACCEL = 1.75;
+var ACCEL = 2.0;
 
 var display = null;
 var screenSize = null;
