@@ -19,6 +19,9 @@
         var diffX = evt.webkitMovementX;
         var diffY = evt.webkitMovementY;
 
+        // Ignore "in-place" moves.
+        if(!diffX && !diffY) { return; }
+
         // Send mouse move event.
         rpc("m", {x: diffX, y: diffY});
     }
