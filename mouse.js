@@ -38,7 +38,12 @@ function currentPosition(callback) {
 
 
 function move(diffX, diffY) {
+    currentPosition(function(current) {
+        var newX = current[0] + diffX;
+        var newY = current[1] + diffY;
 
+        console.log("Gotta move to: ", newX, newY);
+    });
 }
 
 
