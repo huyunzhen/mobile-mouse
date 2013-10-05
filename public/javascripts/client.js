@@ -52,6 +52,14 @@
     }
 
 
+    // Finger raised from surface.
+    function touchEnded(evt) {
+        // Reset old coordinates to prevent cursor skipping.
+        oldX = null;
+        oldY = null;
+    }
+
+
     function rpc(method, data, callback) {
         var xmlhttp = new XMLHttpRequest();
 
@@ -70,4 +78,5 @@
     // Attach control area events.
     control.onmousemove = rafWrap(moved);
     control.ontouchmove = rafWrap(touchMoved);
+    control.ontouchend = touchEnded;
 })();
