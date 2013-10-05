@@ -37,12 +37,18 @@ function currentPosition(callback) {
 }
 
 
+function changePosition(x, y) {
+    var root = display.screen[0].root;
+    display.client.WarpPointer(0, root, 0, 0, 0, 0, x, y);
+}
+
+
 function move(diffX, diffY) {
     currentPosition(function(current) {
         var newX = current[0] + diffX;
         var newY = current[1] + diffY;
 
-        console.log("Gotta move to: ", newX, newY);
+        changePosition(newX, newY);
     });
 }
 
