@@ -1,5 +1,9 @@
 (function run() {
     var control = document.querySelector(".control");
+    // Used for diff behaviour simulation.
+    var oldX = null;
+    var oldY = null;
+
 
     // Throttle calls with Request Animation Frame.
     function rafWrap(fn) {
@@ -15,7 +19,6 @@
 
 
     function moved(evt) {
-        // TODO: Fall back to compatible event API.
         var diffX = evt.webkitMovementX;
         var diffY = evt.webkitMovementY;
 
@@ -24,6 +27,28 @@
 
         // Send mouse move event.
         rpc("m", {x: diffX, y: diffY});
+    }
+
+
+    function touchMoved(evt) {
+        evt.preventDefault();
+
+        // Ignore anything but first thinger (for now).
+        var touch = evt.targetTouches[0];
+        var newX = touch.screenX;
+        var newY = touch.screenY;
+
+        // We have first diff, pass the move action.
+        if(oldX !== null && oldY !== null) {
+            rpc("m", {
+                x: newX - oldX, 
+                y: newY - oldY
+            });
+        }
+        
+        // Store the new coordinates as previous for next call.
+        oldX = newX;
+        oldY = newY;
     }
 
 
@@ -44,4 +69,5 @@
 
     // Attach control area events.
     control.onmousemove = rafWrap(moved);
+    control.ontouchmove = rafWrap(touchMoved);
 })();
