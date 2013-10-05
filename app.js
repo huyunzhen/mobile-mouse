@@ -30,7 +30,7 @@ if ('development' == app.get('env')) {
 
 
 app.get('/', index_route);
-app.get('/rpc', rpc_route);
+app.post('/rpc', rpc_route);
 
 
 http.createServer(app).listen(app.get('port'), function(){

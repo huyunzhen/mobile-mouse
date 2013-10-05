@@ -1,7 +1,6 @@
 (function run() {
     var control = document.querySelector(".control");
 
-
     // Throttle calls with Request Animation Frame.
     function rafWrap(fn) {
         return function() {
@@ -16,12 +15,28 @@
 
 
     function moved(evt) {
+        control.onmousemove = null;
         // TODO: Fall back to compatible event API.
         var diffX = evt.webkitMovementX;
         var diffY = evt.webkitMovementY;
 
-        console.log("Moved X: " + diffX + " Y: " + diffY);
+        // Send mouse move event.
+        rpc("move", {x: diffX, y: diffY});
     }
+
+
+    function rpc(method, data, callback) {
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.onreadystatechange = function() {
+            if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                callback(xmlhttp);
+            }
+        }
+
+        xmlhttp.open("POST", "/rpc/?m=" + method, true);
+        xmlhttp.send(JSON.stringify(data));
+    };
    
 
     // Attach control area events.
