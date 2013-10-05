@@ -24,16 +24,7 @@ function init() {
 }
 
 
-function checkInit() {
-    if(display === null) {
-        throw new Error("X11 hasn't been initialized yet.");
-    }
-    return true;
-}
-
-
 function currentPosition(callback) {
-    checkInit();
     var root = display.screen[0].root;
    
     display.client.QueryPointer(root, function(err, result) {
