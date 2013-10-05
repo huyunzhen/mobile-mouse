@@ -1,14 +1,15 @@
 var mouse = require("../mouse");
 
 module.exports = function(req, res) {
-    console.log(req.query);
-    console.log(req.body);
+    var method = req.query.m;
+    if(!method) { 
+        return res.send(500, "Missing method"); 
+    }
 
-    res.send(200);
-
-    /*mouse.currentPosition(function(position) {
-        res.json({
-            position: position
-        });
-    });*/
+    if(method === "m") {
+        mouse.move(req.body.x, req.body.y);
+        return res.send(200);
+    }
+    
+    res.send(500, "Unknown method");
 };

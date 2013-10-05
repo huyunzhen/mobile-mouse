@@ -37,5 +37,11 @@ function currentPosition(callback) {
 }
 
 
+function move(diffX, diffY) {
+
+}
+
+
 module.exports.init = init;
 module.exports.currentPosition = currentPosition;
+module.exports.move = move;
