@@ -2,7 +2,8 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 
-var routes = require('./routes');
+var index_route = require('./routes/index');
+var rpc_route = require('./routes/rpc');
 var mouse = require("./mouse");
 
 var app = express();
@@ -28,7 +29,8 @@ if ('development' == app.get('env')) {
 }
 
 
-app.get('/', routes.index);
+app.get('/', index_route);
+app.get('/rpc', rpc_route);
 
 
 http.createServer(app).listen(app.get('port'), function(){
