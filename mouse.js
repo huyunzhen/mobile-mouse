@@ -26,7 +26,7 @@ function init() {
 
 function currentPosition(callback) {
     var root = display.screen[0].root;
-   
+
     display.client.QueryPointer(root, function(err, result) {
         if(!!err) {
             throw new Error(err);
@@ -39,7 +39,10 @@ function currentPosition(callback) {
 
 function changePosition(x, y) {
     var root = display.screen[0].root;
-    display.client.WarpPointer(0, root, 0, 0, 0, 0, parseInt(x), parseInt(y));
+    display.client.WarpPointer(0, root, 0, 0, 0, 0,
+                               parseInt(x, 10),
+                               parseInt(y, 10)
+    );
 }
 
 
@@ -62,6 +65,21 @@ function move(diffX, diffY) {
 }
 
 
+function click(button) {
+    if(button === undefined) {
+        button = 1;
+    }
+
+    var root = display.screen[0].root;
+
+    display.client.require('xtest', function(Test) {
+        Test.FakeInput(Test.ButtonPress, button, 0, root, 0, 0);
+        Test.FakeInput(Test.ButtonRelease, button, 0, root, 0, 0);
+    });
+}
+
+
 module.exports.init = init;
 module.exports.currentPosition = currentPosition;
 module.exports.move = move;
+module.exports.click = click;

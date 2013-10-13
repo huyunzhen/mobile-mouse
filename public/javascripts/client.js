@@ -41,14 +41,21 @@
         // We have first diff, pass the move action.
         if(oldX !== null && oldY !== null) {
             rpc("m", {
-                x: newX - oldX, 
+                x: newX - oldX,
                 y: newY - oldY
             });
         }
-        
+
         // Store the new coordinates as previous for next call.
         oldX = newX;
         oldY = newY;
+    }
+
+
+    // Tap registered.
+    function clicked(evt) {
+        evt.preventDefault();
+        rpc("c");
     }
 
 
@@ -65,18 +72,19 @@
 
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                !!callback && callback(xmlhttp);
+                if(!!callback) { callback(xmlhttp); }
             }
-        }
+        };
 
         xmlhttp.open("POST", "/rpc/?m=" + method, true);
         xmlhttp.setRequestHeader("Content-type","application/json");
         xmlhttp.send(JSON.stringify(data));
-    };
-   
+    }
+
 
     // Attach control area events.
     control.onmousemove = rafWrap(moved);
     control.ontouchmove = rafWrap(touchMoved);
+    control.onclick = clicked;
     control.ontouchend = touchEnded;
 })();
