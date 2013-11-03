@@ -4,6 +4,27 @@
     var oldX = null;
     var oldY = null;
 
+    var ws = null;
+
+    // Establish Websocket connection with server.
+    function connect() {
+        ws = new WebSocket('ws://' + location.host);
+        ws.onopen = function() {
+            console.log("Connected to the server");
+        };
+    }
+
+    function rpc(method, data) {
+        // Ignore commands before Websocket channel is ready.
+        if(!ws) { return; }
+
+        var payload = JSON.stringify([
+            method,
+            data
+        ]);
+
+        ws.send(payload);
+    }
 
     // Throttle calls with Request Animation Frame.
     function rafWrap(fn) {
@@ -67,24 +88,12 @@
     }
 
 
-    function rpc(method, data, callback) {
-        var xmlhttp = new XMLHttpRequest();
-
-        xmlhttp.onreadystatechange = function() {
-            if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                if(!!callback) { callback(xmlhttp); }
-            }
-        };
-
-        xmlhttp.open("POST", "/rpc/?m=" + method, true);
-        xmlhttp.setRequestHeader("Content-type","application/json");
-        xmlhttp.send(JSON.stringify(data));
-    }
-
-
     // Attach control area events.
     control.onmousemove = rafWrap(moved);
     control.ontouchmove = rafWrap(touchMoved);
     control.onclick = clicked;
     control.ontouchend = touchEnded;
+
+    // Start Websocket.
+    connect();
 })();
