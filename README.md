@@ -17,6 +17,7 @@ How to run this thing
 2. Install dependencies:
 
     cd mobile-mouse
+    
     npm install
     
 3. Run the server:
