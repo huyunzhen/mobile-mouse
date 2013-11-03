@@ -5,6 +5,8 @@ var websocket = require('ws');
 
 var index_route = require('./routes/index');
 var mouse = require("./mouse");
+var control = require("./control");
+
 
 var app = express();
 
@@ -41,24 +43,12 @@ var wss = new websocket.Server({server: server});
 
 wss.on('connection', function(ws) {
     console.log("Client connected.");
-
-    ws.on("message", function(payload) {
-        var content = JSON.parse(payload);
-        var method = content[0];
-        var data = content[1];
-
-        if(method === "c") {
-            return mouse.click();
-        }
-
-        if(method === "m") {
-            mouse.move(data.x, data.y);
-        }
-    });
-
     ws.on("close", function() {
         console.log("Client disconnected");
     });
+
+    // Pass messages from the client to dedicated handler.
+    ws.on("message", control);
 });
 
 
