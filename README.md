@@ -6,6 +6,7 @@ Remote mouse experiment.
 Using web application to control mouse in X11 server. Powered by Node and Express.
 
 
+
 How to run this thing
 ---------------------
 
@@ -21,8 +22,6 @@ How to run this thing
 3. Run the server:
 
     npm start
-    # or
-    node app.js
     
 4. Open the control page on your mobile using `http://<your server IP>:3000` address.
 
